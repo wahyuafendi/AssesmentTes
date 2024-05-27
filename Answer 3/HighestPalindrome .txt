@@ -1,0 +1,46 @@
+public class HighestPalindrome {
+
+    public static void main(String[] args) {
+        System.out.println(findHighestPalindrome("3943", 1)); // Output: 3993
+        System.out.println(findHighestPalindrome("932239", 2)); // Output: 992299
+    }
+
+    public static String findHighestPalindrome(String s, int k) {
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+
+        // Helper function to find the highest palindrome recursively
+        String result = findPalindromeRecursively(arr, k, 0, n - 1);
+
+        return result == null ? "-1" : result;
+    }
+
+    private static String findPalindromeRecursively(char[] arr, int k, int left, int right) {
+        if (left > right) {
+            return new String(arr);
+        }
+
+        if (arr[left] == arr[right]) {
+            return findPalindromeRecursively(arr, k, left + 1, right - 1);
+        } else {
+            if (k == 0) {
+                return null;
+            }
+
+            char originalLeft = arr[left];
+            char originalRight = arr[right];
+
+            arr[left] = arr[right] = (char) Math.max(arr[left], arr[right]);
+
+            String result = findPalindromeRecursively(arr, k - 1, left + 1, right - 1);
+            if (result != null) {
+                return result;
+            }
+
+            arr[left] = originalLeft;
+            arr[right] = originalRight;
+
+            return null;
+        }
+    }
+}

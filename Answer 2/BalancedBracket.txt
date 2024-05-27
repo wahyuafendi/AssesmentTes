@@ -1,0 +1,71 @@
+import java.util.Stack;
+
+/**
+ * BalancedBracket class to check if a string of brackets is balanced.
+ */
+public class BalancedBracket {
+
+    /**
+     * Checks if the input string has balanced brackets.
+     *
+     * @param s The input string containing brackets.
+     * @return "YES" if the brackets are balanced, otherwise "NO".
+     */
+    public static String isBalanced(String s) {
+        // Stack to keep track of opening brackets
+        Stack<Character> stack = new Stack<>();
+        
+        // Iterate through each character in the string
+        for (char ch : s.toCharArray()) {
+            // If character is an opening bracket, push it onto the stack
+            if (ch == '{' || ch == '[' || ch == '(') {
+                stack.push(ch);
+            } 
+            // If character is a closing bracket, check for matching opening bracket
+            else if (ch == '}' || ch == ']' || ch == ')') {
+                // If stack is empty, there is no matching opening bracket
+                if (stack.isEmpty()) {
+                    return "NO";
+                }
+                // Pop the top of the stack and check for matching pair
+                char openBracket = stack.pop();
+                if (!isMatchingPair(openBracket, ch)) {
+                    return "NO";
+                }
+            }
+        }
+        
+        // If stack is empty, all opening brackets have matching closing brackets
+        return stack.isEmpty() ? "YES" : "NO";
+    }
+    
+    /**
+     * Helper method to check if the brackets are matching pairs.
+     *
+     * @param open The opening bracket.
+     * @param close The closing bracket.
+     * @return True if they are a matching pair, otherwise false.
+     */
+    private static boolean isMatchingPair(char open, char close) {
+        return (open == '{' && close == '}') ||
+               (open == '[' && close == ']') ||
+               (open == '(' && close == ')');
+    }
+
+    /**
+     * Main method for testing the isBalanced method with sample inputs.
+     *
+     * @param args Command line arguments.
+     */
+    public static void main(String[] args) {
+        String[] samples = {
+            "{ [ ( ) ] }",
+            "{ [ ( ] ) }",
+            "{ ( ( [ ] ) [ ] ) [ ] }"
+        };
+        
+        for (String sample : samples) {
+            System.out.println(isBalanced(sample));
+        }
+    }
+}
